@@ -3,11 +3,9 @@ package com.cybozu.labs.langdetect;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import net.arnx.jsonic.JSON;
-import net.arnx.jsonic.JSONException;
 
 import com.cybozu.labs.langdetect.util.LangProfile;
 
@@ -69,13 +67,13 @@ public class DetectorFactory {
         int langsize = listFiles.length, index = 0;
         for (File file: listFiles) {
             if (file.getName().startsWith(".") || !file.isFile()) continue;
-            FileInputStream is = null;
+            ObjectInputStream is = null;
             try {
-                is = new FileInputStream(file);
-                LangProfile profile = JSON.decode(is, LangProfile.class);
+                is = new ObjectInputStream(new FileInputStream(file));
+                LangProfile profile = (LangProfile) is.readObject();
                 addProfile(profile, index, langsize);
                 ++index;
-            } catch (JSONException e) {
+            } catch (ClassNotFoundException e) {
                 throw new LangDetectException(ErrorCode.FormatError, "profile format error in '" + file.getName() + "'");
             } catch (IOException e) {
                 throw new LangDetectException(ErrorCode.FileLoadError, "can't open '" + file.getName() + "'");

@@ -1,5 +1,6 @@
 package com.cybozu.labs.langdetect.util;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
@@ -10,8 +11,9 @@ import java.util.Set;
  * 
  * @author Nakatani Shuyo
  */
-public class LangProfile {
-    private static final int MINIMUM_FREQ = 2;
+public class LangProfile implements Serializable {
+	private static final long serialVersionUID = 1L;
+	private static final int MINIMUM_FREQ = 2;
     private static final int LESS_FREQ_RATIO = 100000;
     public String name = null;
     public HashMap<String, Integer> freq = new HashMap<String, Integer>();

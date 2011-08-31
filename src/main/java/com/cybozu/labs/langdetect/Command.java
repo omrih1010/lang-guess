@@ -6,15 +6,13 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 
 import com.cybozu.labs.langdetect.util.LangProfile;
-
-import net.arnx.jsonic.JSON;
-import net.arnx.jsonic.JSONException;
 
 /**
  * 
@@ -131,16 +129,14 @@ public class Command {
                 continue;
             }
 
-            FileOutputStream os = null;
+            ObjectOutputStream os = null;
             try {
                 LangProfile profile = GenProfile.load(lang, file);
                 profile.omitLessFreq();
 
                 File profile_path = new File(get("directory") + "/profiles/" + lang);
-                os = new FileOutputStream(profile_path);
-                JSON.encode(profile, os);
-            } catch (JSONException e) {
-                e.printStackTrace();
+                os = new ObjectOutputStream(new FileOutputStream(profile_path));
+                os.writeObject(profile);
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (LangDetectException e) {
