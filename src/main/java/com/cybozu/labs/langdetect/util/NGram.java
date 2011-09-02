@@ -1,6 +1,5 @@
 package com.cybozu.labs.langdetect.util;
 
-import java.lang.Character.UnicodeBlock;
 import java.util.HashMap;
 
 /**
@@ -71,25 +70,25 @@ public class NGram {
      */
     static public char normalize(char ch) {
         Character.UnicodeBlock block = Character.UnicodeBlock.of(ch);
-        if (block == UnicodeBlock.BASIC_LATIN) {
+        if (block == Character.UnicodeBlock.BASIC_LATIN) {
             if (ch<'A' || (ch<'a' && ch >'Z') || ch>'z') ch = ' ';
-        } else if (block == UnicodeBlock.LATIN_1_SUPPLEMENT) {
+        } else if (block == Character.UnicodeBlock.LATIN_1_SUPPLEMENT) {
             if (LATIN1_EXCLUDED.indexOf(ch)>=0) ch = ' ';
-        } else if (block == UnicodeBlock.GENERAL_PUNCTUATION) {
+        } else if (block == Character.UnicodeBlock.GENERAL_PUNCTUATION) {
             ch = ' ';
-        } else if (block == UnicodeBlock.ARABIC) {
+        } else if (block == Character.UnicodeBlock.ARABIC) {
             if (ch == '\u06cc') ch = '\u064a'; 
-        } else if (block == UnicodeBlock.LATIN_EXTENDED_ADDITIONAL) {
+        } else if (block == Character.UnicodeBlock.LATIN_EXTENDED_ADDITIONAL) {
             if (ch >= '\u1ea0') ch = '\u1ec3';
-        } else if (block == UnicodeBlock.HIRAGANA) {
+        } else if (block == Character.UnicodeBlock.HIRAGANA) {
             ch = '\u3042';
-        } else if (block == UnicodeBlock.KATAKANA) {
+        } else if (block == Character.UnicodeBlock.KATAKANA) {
             ch = '\u30a2';
-        } else if (block == UnicodeBlock.BOPOMOFO || block == UnicodeBlock.BOPOMOFO_EXTENDED) {
+        } else if (block == Character.UnicodeBlock.BOPOMOFO || block == Character.UnicodeBlock.BOPOMOFO_EXTENDED) {
             ch = '\u3105';
-        } else if (block == UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS) {
+        } else if (block == Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS) {
             if (cjk_map.containsKey(ch)) ch = cjk_map.get(ch);
-        } else if (block == UnicodeBlock.HANGUL_SYLLABLES) {
+        } else if (block == Character.UnicodeBlock.HANGUL_SYLLABLES) {
             ch = '\uac00';
         }
         return ch;

@@ -82,9 +82,7 @@ public class DetectorFactory {
             } catch (IOException e) {
                 throw new LangDetectException(ErrorCode.FileLoadError, "can't open '" + file.getName() + "'");
             } finally {
-                try {
-                    if (is!=null) is.close();
-                } catch (IOException e) {}
+                IOUtils.closeQuietly(is);
             }
         }
     }

@@ -2,7 +2,6 @@ package com.cybozu.labs.langdetect;
 
 import java.io.IOException;
 import java.io.Reader;
-import java.lang.Character.UnicodeBlock;
 import java.util.ArrayList;
 import java.util.Formatter;
 import java.util.HashMap;
@@ -183,7 +182,7 @@ public class Detector {
             char c = text.charAt(i);
             if (c <= 'z' && c >= 'A') {
                 ++latinCount;
-            } else if (c >= '\u0300' && UnicodeBlock.of(c) != UnicodeBlock.LATIN_EXTENDED_ADDITIONAL) {
+            } else if (c >= '\u0300' && Character.UnicodeBlock.of(c) != Character.UnicodeBlock.LATIN_EXTENDED_ADDITIONAL) {
                 ++nonLatinCount;
             }
         }

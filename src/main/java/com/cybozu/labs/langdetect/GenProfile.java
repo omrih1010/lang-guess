@@ -11,6 +11,8 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
+import be.frma.langguess.IOUtils;
+
 import com.cybozu.labs.langdetect.util.LangProfile;
 import com.cybozu.labs.langdetect.util.TagExtractor;
 
@@ -70,9 +72,7 @@ public class GenProfile {
         } catch (IOException e) {
             throw new LangDetectException(ErrorCode.CantOpenTrainData, "Can't open training database file '" + file.getName() + "'");
         } finally {
-            try {
-                if (is != null) is.close();
-            } catch (IOException e) {}
+            IOUtils.closeQuietly(is);
         }
         return profile;
     }

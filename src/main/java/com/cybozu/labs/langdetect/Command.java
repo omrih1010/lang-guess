@@ -12,6 +12,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import be.frma.langguess.IOUtils;
+
 import com.cybozu.labs.langdetect.util.LangProfile;
 
 /**
@@ -143,9 +145,7 @@ public class Command {
             } catch (LangDetectException e) {
                 e.printStackTrace();
             } finally {
-                try {
-                    if (os!=null) os.close();
-                } catch (IOException e) {}
+            	IOUtils.closeQuietly(os);
             }
         }        
     }
@@ -174,9 +174,7 @@ public class Command {
             } catch (LangDetectException e) {
                 e.printStackTrace();
             } finally {
-                try {
-                    if (is!=null) is.close();
-                } catch (IOException e) {}
+                IOUtils.closeQuietly(is);
             }
 
         }
@@ -228,9 +226,7 @@ public class Command {
             } catch (LangDetectException e) {
                 e.printStackTrace();
             } finally {
-                try {
-                    if (is!=null) is.close();
-                } catch (IOException e) {}
+                IOUtils.closeQuietly(is);
             }
 
             ArrayList<String> langlist = new ArrayList<String>(result.keySet());
