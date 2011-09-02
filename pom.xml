@@ -3,7 +3,7 @@
 
 	<groupId>be.frma</groupId>
 	<artifactId>lang-guess</artifactId>
-	<version>0.0.4-SNAPSHOT</version>
+	<version>0.0.4</version>
 	<packaging>jar</packaging>
 
 	<name>lang-guess</name>
