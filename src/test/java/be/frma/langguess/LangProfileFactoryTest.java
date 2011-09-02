@@ -15,7 +15,7 @@ import org.junit.Test;
 import com.cybozu.labs.langdetect.util.LangProfile;
 
 public class LangProfileFactoryTest {
-	private static final File PROFILE_DIR = new File("profiles");
+	private static final File PROFILE_DIR = new File(new File(new File(new File("src"), "main"), "resources"), "languages");
 
 	@Test
 	public void readEnFile() throws IOException {
