@@ -3,9 +3,12 @@ package com.cybozu.labs.langdetect;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import be.rolaf.langguess.IOUtils;
 
 import com.cybozu.labs.langdetect.util.LangProfile;
 
@@ -28,6 +31,7 @@ import com.cybozu.labs.langdetect.util.LangProfile;
  * 
  * @see Detector
  * @author Nakatani Shuyo
+ * @author Francois ROLAND
  */
 public class DetectorFactory {
     public HashMap<String, double[]> wordLangProbMap;
@@ -84,8 +88,41 @@ public class DetectorFactory {
             }
         }
     }
-
+    
     /**
+     * Load profiles from the classpath in a specific directory.
+     * 
+     * @param classLoader the ClassLoader to load the profiles from.
+     * @param profileDirectory profile directory path inside the classpath.
+     * @throws LangDetectException  Can't open profiles(error code = {@link ErrorCode#FileLoadError})
+     *                              or profile's format is wrong (error code = {@link ErrorCode#FormatError})
+     */
+    public static void loadProfile(ClassLoader classLoader, String profileDirectory, String... languages) throws LangDetectException {
+        int index = 0;
+		for (String language : languages) {
+			ObjectInputStream in = null;
+			String languageFileName = profileDirectory + '/' + language;
+			try {
+				InputStream resourceStream = classLoader.getResourceAsStream(languageFileName);
+				if (resourceStream == null) {
+					continue;
+				}
+				assert resourceStream.available() > 0;
+				in = new ObjectInputStream(resourceStream);
+                LangProfile profile = (LangProfile) in.readObject();
+                addProfile(profile, index, languages.length);
+                ++index;
+            } catch (ClassNotFoundException e) {
+                throw new LangDetectException(ErrorCode.FormatError, "profile format error in '" + languageFileName + "'");
+            } catch (IOException e) {
+                throw new LangDetectException(ErrorCode.FileLoadError, "can't open '" + languageFileName + "'");
+			} finally {
+				IOUtils.closeQuietly(in);
+			}
+		}
+    }
+
+	/**
      * @param profile
      * @param langsize 
      * @param index 
