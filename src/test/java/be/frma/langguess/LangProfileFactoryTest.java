@@ -23,6 +23,11 @@ public class LangProfileFactoryTest {
 	}
 
 	@Test
+	public void readBnFile() throws IOException {
+		checkProfileFile("bn", 3, 2846);
+	}
+
+	@Test
 	public void readFrFile() throws IOException {
 		checkProfileFile("fr", 3, 2232);
 	}

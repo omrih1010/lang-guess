@@ -4,11 +4,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import be.frma.langguess.IOUtils;
+import be.frma.langguess.LangProfileFactory;
 
 import com.cybozu.labs.langdetect.util.LangProfile;
 
@@ -71,14 +71,12 @@ public class DetectorFactory {
         int langsize = listFiles.length, index = 0;
         for (File file: listFiles) {
             if (file.getName().startsWith(".") || !file.isFile()) continue;
-            ObjectInputStream is = null;
+            InputStream is = null;
             try {
-                is = new ObjectInputStream(new FileInputStream(file));
-                LangProfile profile = (LangProfile) is.readObject();
+                is = new FileInputStream(file);
+                LangProfile profile = LangProfileFactory.readProfile(is);
                 addProfile(profile, index, langsize);
                 ++index;
-            } catch (ClassNotFoundException e) {
-                throw new LangDetectException(ErrorCode.FormatError, "profile format error in '" + file.getName() + "'");
             } catch (IOException e) {
                 throw new LangDetectException(ErrorCode.FileLoadError, "can't open '" + file.getName() + "'");
             } finally {
@@ -98,20 +96,17 @@ public class DetectorFactory {
     public static void loadProfile(ClassLoader classLoader, String profileDirectory, String... languages) throws LangDetectException {
         int index = 0;
 		for (String language : languages) {
-			ObjectInputStream in = null;
+			InputStream in = null;
 			String languageFileName = profileDirectory + '/' + language;
 			try {
-				InputStream resourceStream = classLoader.getResourceAsStream(languageFileName);
-				if (resourceStream == null) {
+				in = classLoader.getResourceAsStream(languageFileName);
+				if (in == null) {
 					continue;
 				}
-				assert resourceStream.available() > 0;
-				in = new ObjectInputStream(resourceStream);
-                LangProfile profile = (LangProfile) in.readObject();
+				assert in.available() > 0;
+                LangProfile profile = LangProfileFactory.readProfile(in);
                 addProfile(profile, index, languages.length);
                 ++index;
-            } catch (ClassNotFoundException e) {
-                throw new LangDetectException(ErrorCode.FormatError, "profile format error in '" + languageFileName + "'");
             } catch (IOException e) {
                 throw new LangDetectException(ErrorCode.FileLoadError, "can't open '" + languageFileName + "'");
 			} finally {
