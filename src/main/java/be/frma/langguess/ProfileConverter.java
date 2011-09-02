@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package be.rolaf.langguess;
+package be.frma.langguess;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -26,6 +26,9 @@ import net.arnx.jsonic.JSON;
 
 import com.cybozu.labs.langdetect.util.LangProfile;
 
+/**
+ * This command-line utility converts profiles from language-detection to profiles understandable by this project.
+ */
 public class ProfileConverter {
 	public static void main(String[] args) throws IOException {
 		File profiles = new File("profiles");

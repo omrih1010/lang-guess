@@ -8,7 +8,7 @@ import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import be.rolaf.langguess.IOUtils;
+import be.frma.langguess.IOUtils;
 
 import com.cybozu.labs.langdetect.util.LangProfile;
 

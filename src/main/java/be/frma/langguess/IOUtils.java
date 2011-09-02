@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package be.rolaf.langguess;
+package be.frma.langguess;
 
 import java.io.Closeable;
 import java.io.IOException;
