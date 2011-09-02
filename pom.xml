@@ -114,23 +114,6 @@
 					<pushChanges>true</pushChanges>
 				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>org.riedelcastro</groupId>
-				<artifactId>gcupload-maven-plugin</artifactId>
-				<version>1.0</version>
-				<configuration>
-					<uploads>
-						<upload>
-							<extension>jar</extension>
-						</upload>
-						<upload>
-							<postfix>sources</postfix>
-							<extensions>jar</extensions>
-							<labels>Type-Source,Featured</labels>
-						</upload>
-					</uploads>
-				</configuration>
-			</plugin>
 		</plugins>
 		<pluginManagement>
 			<plugins>
