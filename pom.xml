@@ -154,6 +154,12 @@
 			<artifactId>stax-api</artifactId>
 			<version>1.0.1</version>
 		</dependency>
+		<dependency>
+			<groupId>net.arnx.jsonic</groupId>
+			<artifactId>jsonic</artifactId>
+			<version>1.2.0</version>
+			<optional>true</optional>
+		</dependency>
 	</dependencies>
 	<distributionManagement>
 		<repository>

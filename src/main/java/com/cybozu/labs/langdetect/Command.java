@@ -22,6 +22,7 @@ import com.cybozu.labs.langdetect.util.LangProfile;
  * 
  * 
  * @author Nakatani Shuyo
+ * @author Francois ROLAND
  *
  */
 public class Command {
