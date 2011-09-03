@@ -21,6 +21,8 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Formatter;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.regex.Pattern;
 
@@ -81,15 +83,15 @@ public class Detector {
     private static final Pattern URL_REGEX = Pattern.compile("https?://[-_.?&~;+=/#0-9A-Za-z]+");
     private static final Pattern MAIL_REGEX = Pattern.compile("[-_.0-9A-Za-z]+@[-_0-9A-Za-z]+[-_.0-9A-Za-z]+");
     
-    private final HashMap<String, double[]> wordLangProbMap;
-    private final ArrayList<String> langlist;
+    private final Map<String, double[]> wordLangProbMap;
+    private final List<String> langlist;
 
     private StringBuffer text;
     private double[] langprob = null;
 
     private double alpha = ALPHA_DEFAULT;
-    private int n_trial = 7;
-    private int max_text_length = 10000;
+    private int nTrial = 7;
+    private int maxTextLength = 10000;
     private double[] priorMap = null;
     private boolean verbose = false;
     private Long seed = null;
@@ -149,7 +151,7 @@ public class Detector {
      * @param max_text_length the max_text_length to set
      */
     public void setMaxTextLength(int max_text_length) {
-        this.max_text_length = max_text_length;
+        this.maxTextLength = max_text_length;
     }
 
     
@@ -163,8 +165,8 @@ public class Detector {
      * @throws IOException Can't read the reader.
      */
     public void append(Reader reader) throws IOException {
-        char[] buf = new char[max_text_length/2];
-        while (text.length() < max_text_length && reader.ready()) {
+        char[] buf = new char[maxTextLength/2];
+        while (text.length() < maxTextLength && reader.ready()) {
             int length = reader.read(buf);
             append(new String(buf, 0, length));
         }
@@ -181,7 +183,7 @@ public class Detector {
         text = URL_REGEX.matcher(text).replaceAll(" ");
         text = MAIL_REGEX.matcher(text).replaceAll(" ");
         char pre = 0;
-        for (int i = 0; i < text.length() && i < max_text_length; ++i) {
+        for (int i = 0; i < text.length() && i < maxTextLength; ++i) {
             char c = NGram.normalize(text.charAt(i));
             if (c != ' ' || pre != ' ') this.text.append(c);
             pre = c;
@@ -252,7 +254,7 @@ public class Detector {
 
         Random rand = new Random();
         if (seed != null) rand.setSeed(seed);
-        for (int t = 0; t < n_trial; ++t) {
+        for (int t = 0; t < nTrial; ++t) {
             double[] prob = initProbability();
             double alpha = this.alpha + rand.nextGaussian() * ALPHA_WIDTH;
 
@@ -264,7 +266,7 @@ public class Detector {
                     if (verbose) System.out.println("> " + sortProbability(prob));
                 }
             }
-            for(int j=0;j<langprob.length;++j) langprob[j] += prob[j] / n_trial;
+            for(int j=0;j<langprob.length;++j) langprob[j] += prob[j] / nTrial;
             if (verbose) System.out.println("==> " + sortProbability(prob));
         }
     }
