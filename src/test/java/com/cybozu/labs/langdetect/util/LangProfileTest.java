@@ -1,6 +1,19 @@
-/**
- * 
+/*
+ * Copyright 2011 Nakatani Shuyo
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package com.cybozu.labs.langdetect.util;
 
 import static org.junit.Assert.*;
@@ -51,7 +64,7 @@ public class LangProfileTest {
     @Test
     public final void testLangProfile() {
         LangProfile profile = new LangProfile();
-        assertEquals(profile.name, null);
+        assertEquals(profile.getName(), null);
     }
 
     /**
@@ -60,7 +73,7 @@ public class LangProfileTest {
     @Test
     public final void testLangProfileStringInt() {
         LangProfile profile = new LangProfile("en");
-        assertEquals(profile.name, "en");
+        assertEquals(profile.getName(), "en");
     }
 
     /**
@@ -70,9 +83,9 @@ public class LangProfileTest {
     public final void testAdd() {
         LangProfile profile = new LangProfile("en");
         profile.add("a");
-        assertEquals((int)profile.freq.get("a"), 1);
+        assertEquals((int)profile.getFreq().get("a"), 1);
         profile.add("a");
-        assertEquals((int)profile.freq.get("a"), 2);
+        assertEquals((int)profile.getFreq().get("a"), 2);
         profile.omitLessFreq();
     }
 
@@ -84,7 +97,7 @@ public class LangProfileTest {
     public final void testAddIllegally1() {
         LangProfile profile = new LangProfile(); // Illegal ( available for only JSONIC ) but ignore  
         profile.add("a"); // ignore
-        assertEquals(profile.freq.get("a"), null); // ignored
+        assertEquals(profile.getFreq().get("a"), null); // ignored
     }
 
     /**
@@ -96,9 +109,9 @@ public class LangProfileTest {
         profile.add("a");
         profile.add("");  // Illegal (string's length of parameter must be between 1 and 3) but ignore
         profile.add("abcd");  // as well
-        assertEquals((int)profile.freq.get("a"), 1);
-        assertEquals(profile.freq.get(""), null);     // ignored
-        assertEquals(profile.freq.get("abcd"), null); // ignored
+        assertEquals((int)profile.getFreq().get("a"), 1);
+        assertEquals(profile.getFreq().get(""), null);     // ignored
+        assertEquals(profile.getFreq().get("abcd"), null); // ignored
         
     }
     
@@ -114,13 +127,13 @@ public class LangProfileTest {
         }
         profile.add("\u3050");
 
-        assertEquals((int)profile.freq.get("a"), 5);
-        assertEquals((int)profile.freq.get("\u3042"), 5);
-        assertEquals((int)profile.freq.get("\u3050"), 1);
+        assertEquals((int)profile.getFreq().get("a"), 5);
+        assertEquals((int)profile.getFreq().get("\u3042"), 5);
+        assertEquals((int)profile.getFreq().get("\u3050"), 1);
         profile.omitLessFreq();
-        assertEquals(profile.freq.get("a"), null); // omitted
-        assertEquals((int)profile.freq.get("\u3042"), 5);
-        assertEquals(profile.freq.get("\u3050"), null); // omitted
+        assertEquals(profile.getFreq().get("a"), null); // omitted
+        assertEquals((int)profile.getFreq().get("\u3042"), 5);
+        assertEquals(profile.getFreq().get("\u3050"), null); // omitted
     }
 
     /**

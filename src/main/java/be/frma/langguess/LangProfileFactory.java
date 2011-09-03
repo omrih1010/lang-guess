@@ -1,3 +1,18 @@
+/*
+ * Copyright 2011 Francois ROLAND
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 package be.frma.langguess;
 
@@ -39,22 +54,22 @@ public class LangProfileFactory {
 			for (String entry : entries) {
 				String[] keyValue = entry.split(":");
 				String label = keyValue[0].trim().replace("\"", "");
-				langProfile.freq.put(label, Integer.valueOf(keyValue[1]));
+				langProfile.getFreq().put(label, Integer.valueOf(keyValue[1]));
 			}
 		}
 
 		m = N_WORDS_PATTERN.matcher(storedProfile);
 		if (m.find()) {
 			String[] nWords = m.group(1).split(",");
-			langProfile.n_words = new int[nWords.length];
+			langProfile.setNWords(new int[nWords.length]);
 			for (int i = 0; i < nWords.length; i++) {
-				langProfile.n_words[i] = Integer.parseInt(nWords[i]);
+				langProfile.getNWords()[i] = Integer.parseInt(nWords[i]);
 			}
 		}
 		
 		m = NAME_PATTERN.matcher(storedProfile);
 		if (m.find()) {
-			langProfile.name = m.group(1);
+			langProfile.setName(m.group(1));
 		}
 
 		return langProfile;
@@ -64,7 +79,7 @@ public class LangProfileFactory {
 		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(output, Charset.forName("utf-8")));
 		writer.write("{\"freq\":{");
 		boolean first = true;
-		for (Map.Entry<String, Integer> entry : langProfile.freq.entrySet()) {
+		for (Map.Entry<String, Integer> entry : langProfile.getFreq().entrySet()) {
 			if (!first) {
 				writer.write(',');
 			}
@@ -76,7 +91,7 @@ public class LangProfileFactory {
 		}
 		writer.write("},\"n_words\":[");
 		first = true;
-		for (int nWord : langProfile.n_words) {
+		for (int nWord : langProfile.getNWords()) {
 			if (!first) {
 				writer.write(',');
 			}
@@ -84,7 +99,7 @@ public class LangProfileFactory {
 			first = false;
 		}
 		writer.write("],\"name\":\"");
-		writer.write(langProfile.name);
+		writer.write(langProfile.getName());
 		writer.write("\"}");
 		writer.flush();
 	}

@@ -1,3 +1,19 @@
+/*
+ * Copyright 2011 Nakatani Shuyo
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.cybozu.labs.langdetect;
 
 import java.io.File;
@@ -122,16 +138,16 @@ public class DetectorFactory {
      * @throws LangDetectException 
      */
     static /* package scope */ void addProfile(LangProfile profile, int index, int langsize) throws LangDetectException {
-        String lang = profile.name;
+        String lang = profile.getName();
         if (instance_.langlist.contains(lang)) {
             throw new LangDetectException(ErrorCode.DuplicateLangError, "duplicate the same language profile");
         }
         instance_.langlist.add(lang);
-        for (String word: profile.freq.keySet()) {
+        for (String word: profile.getFreq().keySet()) {
             if (!instance_.wordLangProbMap.containsKey(word)) {
                 instance_.wordLangProbMap.put(word, new double[langsize]);
             }
-            double prob = profile.freq.get(word).doubleValue() / profile.n_words[word.length()-1];
+            double prob = profile.getFreq().get(word).doubleValue() / profile.getNWords()[word.length()-1];
             instance_.wordLangProbMap.get(word)[index] = prob;
         }
     }

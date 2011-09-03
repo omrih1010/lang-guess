@@ -1,6 +1,19 @@
-/**
- * 
+/*
+ * Copyright 2011 Nakatani Shuyo
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package com.cybozu.labs.langdetect.util;
 
 import static org.junit.Assert.*;
@@ -107,9 +120,9 @@ public class TagExtractorTest {
         extractor.add("This is a sample text.");
         extractor.closeTag(profile);
         assertEquals(extractor.count(), 1);
-        assertEquals(profile.n_words[0], 17);  // Thisisasampletext
-        assertEquals(profile.n_words[1], 22);  // _T, Th, hi, ...
-        assertEquals(profile.n_words[2], 17);  // _Th, Thi, his, ...
+        assertEquals(profile.getNWords()[0], 17);  // Thisisasampletext
+        assertEquals(profile.getNWords()[1], 22);  // _T, Th, hi, ...
+        assertEquals(profile.getNWords()[2], 17);  // _Th, Thi, his, ...
 
         // too short
         extractor.setTag("abstract");

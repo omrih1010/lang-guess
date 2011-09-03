@@ -1,3 +1,18 @@
+/*
+ * Copyright 2011 Francois ROLAND
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 package be.frma.langguess;
 
@@ -61,10 +76,10 @@ public class LangProfileFactoryTest {
 			output = new FileOutputStream(newFile);
 			LangProfileFactory.writeProfile(originalProfile, output);
 			LangProfile newProfile = readProfileFile(newFile);
-			assertThat(newProfile.freq.size(), is(equalTo(originalProfile.freq.size())));
-			assertThat(newProfile.freq, is(equalTo(originalProfile.freq)));
-			assertThat(newProfile.n_words, is(equalTo(originalProfile.n_words)));
-			assertThat(newProfile.name, is(equalTo(originalProfile.name)));
+			assertThat(newProfile.getFreq().size(), is(equalTo(originalProfile.getFreq().size())));
+			assertThat(newProfile.getFreq(), is(equalTo(originalProfile.getFreq())));
+			assertThat(newProfile.getNWords(), is(equalTo(originalProfile.getNWords())));
+			assertThat(newProfile.getName(), is(equalTo(originalProfile.getName())));
 		} finally {
 			IOUtils.closeQuietly(output);
 			newFile.delete();
@@ -75,11 +90,11 @@ public class LangProfileFactoryTest {
 		File profileFile = new File(PROFILE_DIR, language);
 		final LangProfile langProfile = readProfileFile(profileFile);
 		assertThat(langProfile, is(notNullValue()));
-		assertThat(langProfile.name, is(equalTo(language)));
-		assertThat(langProfile.n_words, is(notNullValue()));
-		assertThat(langProfile.n_words.length, is(equalTo(nWordSize)));
-		assertThat(langProfile.freq, is(notNullValue()));
-		assertThat(langProfile.freq.size(), is(equalTo(freqSize)));
+		assertThat(langProfile.getName(), is(equalTo(language)));
+		assertThat(langProfile.getNWords(), is(notNullValue()));
+		assertThat(langProfile.getNWords().length, is(equalTo(nWordSize)));
+		assertThat(langProfile.getFreq(), is(notNullValue()));
+		assertThat(langProfile.getFreq().size(), is(equalTo(freqSize)));
 	}
 
 	private static LangProfile readProfileFile(File profileFile) throws FileNotFoundException, IOException {
