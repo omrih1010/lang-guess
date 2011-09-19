@@ -18,13 +18,6 @@ package com.cybozu.labs.langdetect;
 
 /**
  * @author Nakatani Shuyo
- */
-enum ErrorCode {
-    NoTextError, FormatError, FileLoadError, DuplicateLangError, NeedLoadProfileError, CantDetectError, CantOpenTrainData, TrainDataFormatError, InitParamError
-}
-
-/**
- * @author Nakatani Shuyo
  *
  */
 public class LangDetectException extends Exception {

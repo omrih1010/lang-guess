@@ -29,6 +29,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 import be.frma.langguess.IOUtils;
+import be.frma.langguess.LangProfileFactory;
 
 import com.cybozu.labs.langdetect.util.LangProfile;
 
@@ -132,38 +133,34 @@ public class Command {
     }
     
     /**
-     * Generate Language Profile from Wikipedia Abstract Database File
+     * Generate Language Profile from a text file.
      * 
      * <pre>
-     * usage: --genprofile -d [abstracts directory] [language names]
+     * usage: --genprofile [text file] [language name]
      * </pre>
      * 
      */
     public void generateProfile() {
-        File directory = new File(get("directory"));
-        for (String lang: arglist) {
-            File file = searchFile(directory, lang + "wiki-.*-abstract\\.xml.*");
-            if (file == null) {
-                System.err.println("Not Found abstract xml : lang = " + lang);
-                continue;
-            }
+        File directory = new File(arglist.get(0));
+        String lang = arglist.get(1);
+        File file = searchFile(directory, lang + "wiki-.*-abstract\\.xml.*");
+        if (file == null) {
+            System.err.println("Not Found text file : lang = " + lang);
+            return;
+        }
 
-            ObjectOutputStream os = null;
-            try {
-                LangProfile profile = GenProfile.load(lang, file);
-                profile.omitLessFreq();
-
-                File profile_path = new File(get("directory") + "/profiles/" + lang);
-                os = new ObjectOutputStream(new FileOutputStream(profile_path));
-                os.writeObject(profile);
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (LangDetectException e) {
-                e.printStackTrace();
-            } finally {
-            	IOUtils.closeQuietly(os);
-            }
-        }        
+        ObjectOutputStream os = null;
+        try {
+            LangProfile profile = GenProfile.load(lang, file);
+            profile.omitLessFreq();
+            LangProfileFactory.writeProfile(profile, new FileOutputStream(new File(lang)));
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (LangDetectException e) {
+            e.printStackTrace();
+        } finally {
+        	IOUtils.closeQuietly(os);
+        }
     }
 
     /**
