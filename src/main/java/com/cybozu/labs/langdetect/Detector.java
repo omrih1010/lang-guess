@@ -90,7 +90,7 @@ public class Detector {
     private double[] langprob = null;
 
     private double alpha = ALPHA_DEFAULT;
-    private int nTrial = 7;
+    private static final int N_TRIAL = 7;
     private int maxTextLength = 10000;
     private double[] priorMap = null;
     private boolean verbose = false;
@@ -236,8 +236,7 @@ public class Detector {
     public ArrayList<Language> getProbabilities() throws LangDetectException {
         if (langprob == null) detectBlock();
 
-        ArrayList<Language> list = sortProbability(langprob);
-        return list;
+        return sortProbability(langprob);
     }
     
     /**
@@ -254,7 +253,7 @@ public class Detector {
 
         Random rand = new Random();
         if (seed != null) rand.setSeed(seed);
-        for (int t = 0; t < nTrial; ++t) {
+        for (int t = 0; t < N_TRIAL; ++t) {
             double[] prob = initProbability();
             double alpha = this.alpha + rand.nextGaussian() * ALPHA_WIDTH;
 
@@ -266,7 +265,7 @@ public class Detector {
                     if (verbose) System.out.println("> " + sortProbability(prob));
                 }
             }
-            for(int j=0;j<langprob.length;++j) langprob[j] += prob[j] / nTrial;
+            for(int j=0;j<langprob.length;++j) langprob[j] += prob[j] / N_TRIAL;
             if (verbose) System.out.println("==> " + sortProbability(prob));
         }
     }
@@ -279,6 +278,7 @@ public class Detector {
     private double[] initProbability() {
         double[] prob = new double[langlist.size()];
         if (priorMap != null) {
+            System.arraycopy(priorMap, 0, prob, 0, prob.length);
             for(int i=0;i<prob.length;++i) prob[i] = priorMap[i];
         } else {
             for(int i=0;i<prob.length;++i) prob[i] = 1.0 / langlist.size();
@@ -347,7 +347,6 @@ public class Detector {
     }
 
     /**
-     * @param probabilities HashMap
      * @return lanugage candidates order by probabilities descendently
      */
     private ArrayList<Language> sortProbability(double[] prob) {

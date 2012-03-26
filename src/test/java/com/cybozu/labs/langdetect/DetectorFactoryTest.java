@@ -33,37 +33,29 @@ public class DetectorFactoryTest {
 	@Test
 	public void loadProfilesFromClasspath() throws LangDetectException {
 		DetectorFactory.loadProfile(this.getClass().getClassLoader(), "languages", "en", "fr", "nl", "de");
-		Detector detector = DetectorFactory.create();
-		assertThat(detector, is(notNullValue()));
-		detector.append("This is some English text.");
-		assertThat(detector.detect(), is(equalTo("en")));
-		detector = DetectorFactory.create();
-		detector.append("Ceci est un texte français.");
-		assertThat(detector.detect(), is(equalTo("fr")));
-		detector = DetectorFactory.create();
-		detector.append("Dit is een Nederlandse tekst.");
-		assertThat(detector.detect(), is(equalTo("nl")));
-		detector = DetectorFactory.create();
-		detector.append("Dies ist eine deutsche Text");
-		assertThat(detector.detect(), is(equalTo("de")));
+        assertRightLanguageDetected();
 	}
 
-	@Test
+    @Test
 	public void loadProfilesFromFile() throws LangDetectException {
 		DetectorFactory.loadProfile(new File(new File(new File(new File("src"), "main"), "resources"), "languages"));
-		Detector detector = DetectorFactory.create();
-		assertThat(detector, is(notNullValue()));
-		detector.append("This is some English text.");
-		assertThat(detector.detect(), is(equalTo("en")));
-		detector = DetectorFactory.create();
-		detector.append("Ceci est un texte français.");
-		assertThat(detector.detect(), is(equalTo("fr")));
-		detector = DetectorFactory.create();
-		detector.append("Dit is een Nederlandse tekst.");
-		assertThat(detector.detect(), is(equalTo("nl")));
-		detector = DetectorFactory.create();
-		detector.append("Dies ist eine deutsche Text");
-		assertThat(detector.detect(), is(equalTo("de")));
+        assertRightLanguageDetected();
 	}
 
+
+    private void assertRightLanguageDetected() throws LangDetectException {
+        Detector detector = DetectorFactory.create();
+        assertThat(detector, is(notNullValue()));
+        detector.append("This is some English text.");
+        assertThat(detector.detect(), is(equalTo("en")));
+        detector = DetectorFactory.create();
+        detector.append("Ceci est un texte français.");
+        assertThat(detector.detect(), is(equalTo("fr")));
+        detector = DetectorFactory.create();
+        detector.append("Dit is een Nederlandse tekst.");
+        assertThat(detector.detect(), is(equalTo("nl")));
+        detector = DetectorFactory.create();
+        detector.append("Dies ist eine deutsche Text");
+        assertThat(detector.detect(), is(equalTo("de")));
+    }
 }

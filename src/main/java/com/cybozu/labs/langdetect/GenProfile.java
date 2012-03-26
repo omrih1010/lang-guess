@@ -81,7 +81,7 @@ public class GenProfile {
             } finally {
                 try {
                     if (reader != null) reader.close();
-                } catch (XMLStreamException e) {}
+                } catch (XMLStreamException e) { /* ignore exception */ }
             }
             System.out.println(lang + ":" + tagextractor.count());
 

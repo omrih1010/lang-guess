@@ -186,8 +186,7 @@ public class DetectorFactory {
     static private Detector createDetector() throws LangDetectException {
         if (instance_.langlist.size()==0)
             throw new LangDetectException(ErrorCode.NeedLoadProfileError, "need to load profiles");
-        Detector detector = new Detector(instance_);
-        return detector;
+        return new Detector(instance_);
     }
     
     public static void setSeed(long seed) {
