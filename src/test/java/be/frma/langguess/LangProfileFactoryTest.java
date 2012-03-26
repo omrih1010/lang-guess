@@ -82,7 +82,8 @@ public class LangProfileFactoryTest {
 			assertThat(newProfile.getName(), is(equalTo(originalProfile.getName())));
 		} finally {
 			IOUtils.closeQuietly(output);
-			newFile.delete();
+            //noinspection ResultOfMethodCallIgnored
+            newFile.delete();
 		}
 	}
 

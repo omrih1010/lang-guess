@@ -120,7 +120,7 @@ public class Command {
      * @return false if load success
      */
     private boolean loadProfile() {
-        String profileDirectory = get("directory") + "/"; 
+        String profileDirectory = get("directory") + "/";
         try {
             DetectorFactory.loadProfile(profileDirectory);
             Long seed = getLong("seed");

@@ -45,7 +45,7 @@ public class TagExtractor {
         tag_ = tag;
     }
     public void add(String line) {
-        if (tag_ == target_ && line != null) {
+        if (tag_ != null && tag_.equals(target_) && line != null) {
             buf_.append(line);
         }
     }

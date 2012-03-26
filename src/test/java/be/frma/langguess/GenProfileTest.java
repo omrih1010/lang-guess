@@ -56,7 +56,8 @@ public class GenProfileTest extends GenProfile {
 			assertThat(freqs.get("i"), is(equalTo(3)));
 			assertThat(freqs.get("jou"), is(equalTo(1)));
 		} finally {
-			inputFile.delete();
+            //noinspection ResultOfMethodCallIgnored
+            inputFile.delete();
 		}
 	}
 
